@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nestflight — Family Trips, Perfectly Timed</title>
+<style>
+  :root{
+    --navy:#0b2540; --navy2:#123258; --sky:#1e88e5; --sky-light:#e8f3fd;
+    --gold:#e8a33d; --coral:#ef6461; --green:#2e9e6b; --ink:#1a2432;
+    --gray:#64748b; --line:#e3e8ef; --bg:#f6f8fb; --white:#ffffff;
+    --shadow:0 8px 24px rgba(11,37,64,0.08); --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  header.topnav{position:sticky;top:0;z-index:100;background:rgba(11,37,64,0.97);backdrop-filter:blur(6px);color:#fff;}
+  .topnav .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);}
+  nav.steps{display:flex;gap:4px;flex-wrap:wrap;}
+  nav.steps button{background:none;border:1px solid rgba(255,255,255,0.18);color:#cfe0f5;padding:8px 14px;border-radius:999px;font-size:0.85rem;cursor:pointer;transition:.15s;}
+  nav.steps button:hover{background:rgba(255,255,255,0.08);}
+  nav.steps button.active{background:var(--gold);color:#241a05;border-color:var(--gold);font-weight:700;}
+
+  /* HERO */
+  .hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,#1a4d8f 100%);color:#fff;padding:64px 0 80px;position:relative;overflow:hidden;}
+  .hero::after{content:"✈";position:absolute;right:-20px;top:30px;font-size:220px;opacity:0.06;transform:rotate(20deg);}
+  .hero h1{font-size:2.6rem;max-width:680px;letter-spacing:-0.02em;font-weight:800;}
+  .hero p.lead{margin-top:14px;max-width:600px;color:#cfe0f5;font-size:1.08rem;}
+  .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .badge{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);padding:7px 13px;border-radius:999px;font-size:0.82rem;color:#e6eefb;}
+  .cta-row{margin-top:30px;display:flex;gap:12px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;font-weight:700;cursor:pointer;border:none;font-size:0.95rem;transition:.15s;}
+  .btn-gold{background:var(--gold);color:#241a05;}
+  .btn-gold:hover{background:#f2b256;}
+  .btn-ghost{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.3);}
+
+  section.panel{padding:56px 0;border-bottom:1px solid var(--line);}
+  section.panel:last-of-type{border-bottom:none;}
+  .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+  .section-head h2{font-size:1.6rem;letter-spacing:-0.01em;}
+  .section-head .kicker{color:var(--sky);font-weight:700;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+  .section-head p.sub{color:var(--gray);max-width:560px;font-size:0.95rem;margin-top:4px;}
+
+  .card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:860px){.grid-2,.grid-3{grid-template-columns:1fr;}.hero h1{font-size:2rem;}}
+
+  /* FAMILY SETUP */
+  .kid-card{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fbfcfe;margin-bottom:12px;display:flex;gap:14px;align-items:center;}
+  .avatar{width:44px;height:44px;border-radius:50%;background:var(--sky-light);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--sky);flex-shrink:0;}
+  .kid-fields{flex:1;display:flex;gap:10px;flex-wrap:wrap;}
+  input,select{font-family:inherit;font-size:0.9rem;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);}
+  input[type=text]{flex:1;min-width:110px;}
+  select{flex:1;min-width:180px;}
+  .remove-kid{background:none;border:none;color:var(--coral);cursor:pointer;font-size:1.2rem;padding:0 6px;}
+  .add-kid-btn{background:var(--sky-light);color:var(--sky);border:1px dashed var(--sky);padding:12px;border-radius:10px;width:100%;font-weight:700;cursor:pointer;font-size:0.9rem;}
+
+  .miles-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+  .miles-row:last-child{border-bottom:none;}
+  .miles-row .prog-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+  .miles-row .prog-name{font-weight:700;font-size:0.92rem;flex:1;}
+  .miles-row .prog-sub{color:var(--gray);font-size:0.78rem;}
+  .miles-row input[type=number]{width:110px;text-align:right;}
+
+  /* WINDOWS */
+  .window-card{padding:20px;border-radius:14px;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden;}
+  .window-card .tag{display:inline-block;background:var(--sky-light);color:var(--sky);font-size:0.72rem;font-weight:800;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;}
+  .window-card h3{font-size:1.15rem;margin-bottom:4px;}
+  .window-card .dates{color:var(--gray);font-size:0.88rem;margin-bottom:10px;}
+  .window-card .overlap-note{font-size:0.82rem;color:var(--green);font-weight:600;}
+  .window-card .gap-note{font-size:0.82rem;color:var(--coral);font-weight:600;}
+
+  /* DESTINATIONS */
+  .dest-card{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;transition:.15s;cursor:pointer;}
+  .dest-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+  .dest-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:#fff;}
+  .dest-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:8px;}
+  .dest-body h3{font-size:1.05rem;display:flex;justify-content:space-between;align-items:center;}
+  .match-score{background:var(--green);color:#fff;font-size:0.72rem;font-weight:800;padding:3px 9px;border-radius:999px;}
+  .dest-meta{font-size:0.82rem;color:var(--gray);}
+  .dest-why{font-size:0.85rem;color:var(--ink);background:#f7f9fc;padding:8px 10px;border-radius:8px;border-left:3px solid var(--sky);}
+  .dest-price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;}
+  .price{font-weight:800;color:var(--navy);font-size:1.1rem;}
+  .price .was{text-decoration:line-through;color:var(--gray);font-weight:400;font-size:0.82rem;margin-right:6px;}
+  .pts-pill{font-size:0.74rem;background:#fff3e0;color:#8a5a10;padding:3px 8px;border-radius:999px;font-weight:700;}
+
+  /* DEALS */
+  .deal-row{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:12px;}
+  .deal-row .deal-icon{width:46px;height:46px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+  .deal-row .deal-main{flex:1;}
+  .deal-row .deal-title{font-weight:700;font-size:0.95rem;}
+  .deal-row .deal-sub{font-size:0.8rem;color:var(--gray);margin-top:2px;}
+  .deal-tag{font-size:0.68rem;font-weight:800;text-transform:uppercase;padding:3px 8px;border-radius:6px;letter-spacing:0.03em;}
+  .tag-mistake{background:#fde8e8;color:#b3261e;}
+  .tag-flash{background:#fff3d6;color:#8a5a10;}
+  .tag-points{background:#e6f4ea;color:#146c2e;}
+  .tag-error{background:#eee5fb;color:#5a2ea6;}
+  .deal-countdown{font-size:0.8rem;color:var(--coral);font-weight:700;white-space:nowrap;}
+  .deal-price{text-align:right;min-width:90px;}
+  .deal-price .amt{font-weight:800;font-size:1.15rem;color:var(--navy);}
+
+  /* TRIP BOARD */
+  .trip-board{display:none;}
+  .trip-board.show{display:block;}
+  .tb-header{background:linear-gradient(120deg,var(--navy),#1a4d8f);color:#fff;border-radius:16px;padding:28px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .tb-header h2{font-size:1.5rem;}
+  .tb-header p{color:#cfe0f5;margin-top:4px;font-size:0.9rem;}
+  .tb-stat{text-align:center;}
+  .tb-stat .num{font-size:1.4rem;font-weight:800;color:var(--gold);}
+  .tb-stat .lbl{font-size:0.72rem;color:#cfe0f5;text-transform:uppercase;letter-spacing:0.05em;}
+  .tb-stats-row{display:flex;gap:26px;}
+
+  .itin-day{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .itin-day:last-child{border-bottom:none;}
+  .itin-day .day-num{width:64px;flex-shrink:0;font-weight:800;color:var(--sky);font-size:0.9rem;}
+  .itin-day .day-body{flex:1;font-size:0.88rem;color:var(--ink);}
+  .itin-day .day-body b{display:block;margin-bottom:2px;}
+
+  .pack-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .pack-list label{display:flex;align-items:center;gap:8px;font-size:0.88rem;padding:6px 0;}
+
+  .budget-bar-row{margin-bottom:14px;}
+  .budget-bar-row .bb-top{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px;}
+  .budget-bar-row .bb-top b{font-weight:700;}
+  .budget-track{height:9px;border-radius:999px;background:#eef1f6;overflow:hidden;}
+  .budget-fill{height:100%;border-radius:999px;background:var(--sky);}
+
+  footer{padding:30px 0;text-align:center;color:var(--gray);font-size:0.82rem;}
+  .empty-note{color:var(--gray);font-size:0.9rem;font-style:italic;padding:20px;text-align:center;}
+  .small-btn{background:var(--sky);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;}
+  .small-btn.ghost{background:none;border:1px solid var(--line);color:var(--ink);}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;}
+  .hidden{display:none !important;}
+
+  /* PLAN BADGE */
+  .plan-badge{font-size:0.72rem;font-weight:800;padding:5px 11px;border-radius:999px;background:rgba(232,163,61,0.16);color:var(--gold);border:1px solid rgba(232,163,61,0.4);margin-left:10px;text-transform:uppercase;letter-spacing:0.03em;}
+  .plan-badge.premium{background:rgba(232,163,61,0.9);color:#241a05;}
+  .plan-badge.concierge{background:linear-gradient(120deg,#5a2ea6,#1e88e5);color:#fff;border:none;}
+
+  /* PROFILE BUILDER */
+  .member-card{padding:20px;border:1px solid var(--line);border-radius:14px;background:#fbfcfe;margin-bottom:14px;}
+  .member-top{display:flex;gap:14px;align-items:center;margin-bottom:14px;}
+  .member-top input[type=text]{font-weight:700;font-size:1rem;border:none;background:transparent;padding:4px 0;border-bottom:1px solid transparent;}
+  .member-top input[type=text]:focus{outline:none;border-bottom:1px solid var(--sky);}
+  .role-toggle{display:flex;background:#eef1f6;border-radius:8px;padding:3px;font-size:0.78rem;}
+  .role-toggle button{border:none;background:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-weight:700;color:var(--gray);}
+  .role-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+  .member-fields{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+  .member-fields select{min-width:150px;}
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:0.8rem;cursor:pointer;transition:.12s;color:var(--ink);}
+  .chip.on{background:var(--sky);border-color:var(--sky);color:#fff;font-weight:700;}
+  .dna-card{background:linear-gradient(120deg,var(--navy),#1a4d8f);color:#fff;border-radius:16px;padding:24px;margin-top:6px;}
+  .dna-card h3{font-size:1.1rem;margin-bottom:12px;}
+  .dna-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .dna-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:5px 12px;border-radius:999px;font-size:0.8rem;}
+  .dna-progress-track{height:8px;background:rgba(255,255,255,0.15);border-radius:999px;overflow:hidden;margin-top:6px;}
+  .dna-progress-fill{height:100%;background:var(--gold);border-radius:999px;transition:.3s;}
+  .dna-note{font-size:0.8rem;color:#cfe0f5;margin-top:10px;}
+
+  /* MEMBERSHIP */
+  .tier-toggle{display:flex;justify-content:center;gap:6px;background:#eef1f6;padding:4px;border-radius:999px;width:fit-content;margin:0 auto 26px;}
+  .tier-toggle button{border:none;background:none;padding:8px 18px;border-radius:999px;font-weight:700;font-size:0.85rem;cursor:pointer;color:var(--gray);}
+  .tier-toggle button.active{background:var(--navy);color:#fff;}
+  .tier-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:26px;display:flex;flex-direction:column;position:relative;}
+  .tier-card.popular{border:2px solid var(--gold);box-shadow:0 10px 30px rgba(232,163,61,0.18);}
+  .tier-popular-flag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#241a05;font-size:0.7rem;font-weight:800;padding:4px 14px;border-radius:999px;text-transform:uppercase;letter-spacing:0.04em;}
+  .tier-card h3{font-size:1.2rem;margin-bottom:6px;}
+  .tier-price{font-size:2rem;font-weight:800;color:var(--navy);margin:10px 0 2px;}
+  .tier-price span{font-size:0.9rem;font-weight:400;color:var(--gray);}
+  .tier-sub{font-size:0.82rem;color:var(--gray);margin-bottom:18px;}
+  .tier-feats{list-style:none;flex:1;margin-bottom:20px;}
+  .tier-feats li{font-size:0.86rem;padding:7px 0;border-bottom:1px solid #f1f3f7;display:flex;gap:8px;align-items:flex-start;}
+  .tier-feats li:last-child{border-bottom:none;}
+  .tier-feats li .ico{flex-shrink:0;}
+  .tier-select-btn{width:100%;padding:12px;border-radius:10px;font-weight:700;border:none;cursor:pointer;font-size:0.9rem;}
+  .revenue-note{background:var(--sky-light);border-radius:12px;padding:16px 20px;font-size:0.85rem;color:var(--navy);margin-top:24px;}
+
+  /* LOCKED DEAL */
+  .deal-row.locked{position:relative;overflow:hidden;}
+  .deal-row.locked .deal-main, .deal-row.locked .deal-price{filter:blur(4px);user-select:none;pointer-events:none;}
+  .lock-overlay{position:absolute;inset:0;background:rgba(255,255,255,0.55);display:flex;align-items:center;justify-content:center;gap:10px;}
+  .lock-overlay .unlock-btn{background:var(--navy);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:700;font-size:0.82rem;cursor:pointer;white-space:nowrap;}
+  .book-btn{background:var(--green);color:#fff;border:none;padding:6px 13px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;margin-top:8px;}
+  .affiliate-note{font-size:0.68rem;color:var(--gray);margin-top:3px;}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Nestflight<span class="plan-badge" id="planBadge">Free plan</span></div>
+    <nav class="steps" id="stepNav">
+      <button data-step="setup" class="active">1. Travel Profiles</button>
+      <button data-step="windows">2. Smart Windows</button>
+      <button data-step="destinations">3. Destinations</button>
+      <button data-step="deals">4. Deals Radar</button>
+      <button data-step="miles">5. Miles & Points</button>
+      <button data-step="membership">6. Membership</button>
+      <button data-step="tripboard">7. Trip Board</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Family trips, planned the way a 200k-mile-a-year flyer would do it.</h1>
+    <p class="lead">Build a quick travel profile for everyone in the family, sync the kids' school calendars, and we'll cross-reference every break, in-service day, and long weekend — then hunt down the destinations, dates, and deals that actually make sense for *your* people, before award charts and flight prices catch up.</p>
+    <div class="badge-row">
+      <span class="badge">🧬 Personalized family travel profiles</span>
+      <span class="badge">📅 Auto-synced school calendars</span>
+      <span class="badge">🌍 Ideal-season destination matching</span>
+      <span class="badge">💸 Mistake fare + flash deal radar</span>
+      <span class="badge">✈️ Miles & points sweet-spot finder</span>
+    </div>
+    <div class="cta-row">
+      <button class="btn btn-gold" onclick="goStep('setup')">Start planning</button>
+      <button class="btn btn-ghost" onclick="goStep('windows')">See how the matching works →</button>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <!-- STEP 1: TRAVEL PROFILES -->
+  <section class="panel" id="panel-setup">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Step 1</div>
+        <h2>Build a quick travel profile for everyone</h2>
+        <p class="sub">A few taps per person — role, travel style, what they actually like doing. Kids also get a school, so we can sync their calendar. The more complete these are, the sharper every recommendation downstream gets.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:22px;">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <h3>Family members</h3>
+          <span style="font-size:0.8rem;color:var(--gray);" id="memberCount"></span>
+        </div>
+        <div id="memberList"></div>
+        <button class="add-kid-btn" onclick="addMember('kid')">+ Add a kid</button>
+        <button class="add-kid-btn" style="margin-top:8px;" onclick="addMember('parent')">+ Add a parent / adult</button>
+      </div>
+      <div>
+        <div class="dna-card" id="dnaCard"></div>
+        <div class="card" style="padding:22px;margin-top:16px;">
+          <h3 style="margin-bottom:6px;">Fine-tune this trip</h3>
+          <p style="color:var(--gray);font-size:0.85rem;margin-bottom:14px;">Overrides the family's blended vibe for just this planning session.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;">Vibe override</label>
+              <select id="prefVibe" style="width:100%;margin-top:4px;">
+                <option>Use family blend</option>
+                <option>Beach & relax</option>
+                <option>Adventure / outdoors</option>
+                <option>City & culture</option>
+                <option>Theme parks</option>
+                <option>Ski / snow</option>
+                <option>Surprise me</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;">Max flight time</label>
+              <select id="prefFlight" style="width:100%;margin-top:4px;">
+                <option>Under 3 hours</option>
+                <option selected>Under 6 hours</option>
+                <option>Under 10 hours</option>
+                <option>Anywhere, I have miles</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;">Budget comfort (per trip)</label>
+              <select id="prefBudget" style="width:100%;margin-top:4px;">
+                <option>Keep it lean ($2–4k)</option>
+                <option selected>Moderate ($4–7k)</option>
+                <option>Treat ourselves ($7k+)</option>
+                <option>Mostly points & miles</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-gold" style="margin-top:20px;width:100%;justify-content:center;" onclick="runMatch()">Find our travel windows →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: SMART WINDOWS -->
+  <section class="panel hidden" id="panel-windows">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Step 2</div>
+        <h2>Where everyone's calendars actually line up</h2>
+        <p class="sub">We overlapped every kid's breaks and flagged the windows big enough for a real trip — plus the sneaky long weekends most families miss.</p>
+      </div>
+    </div>
+    <div id="windowResults" class="grid-3"></div>
+  </section>
+
+  <!-- STEP 3: DESTINATIONS -->
+  <section class="panel hidden" id="panel-destinations">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Step 3</div>
+        <h2>Best-timed destinations for your windows</h2>
+        <p class="sub">Matched to weather sweet spots, shoulder-season pricing, and your stated vibe. Click a card to build out that trip.</p>
+      </div>
+    </div>
+    <div id="destResults" class="grid-3"></div>
+  </section>
+
+  <!-- STEP 4: DEALS RADAR -->
+  <section class="panel hidden" id="panel-deals">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Step 4</div>
+        <h2>Deals radar</h2>
+        <p class="sub">Unusual pricing we're currently tracking — mistake fares, flash sales, and points redemptions that punch way above their cash value. These expire fast.</p>
+      </div>
+      <button class="small-btn ghost" onclick="renderDeals(true)">🔄 Refresh radar</button>
+    </div>
+    <div id="dealResults"></div>
+  </section>
+
+  <!-- STEP 5: MILES & POINTS -->
+  <section class="panel hidden" id="panel-miles">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Step 5</div>
+        <h2>Your miles & points stash</h2>
+        <p class="sub">Punch in what you're sitting on. We'll flag which destinations you can basically fly to for free, and where your points are quietly devaluing.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:22px;">
+        <h3 style="margin-bottom:10px;">Your balances</h3>
+        <div id="milesList"></div>
+      </div>
+      <div class="card" style="padding:22px;">
+        <h3 style="margin-bottom:12px;">What your stash unlocks</h3>
+        <div id="milesInsights"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 6: MEMBERSHIP -->
+  <section class="panel hidden" id="panel-membership">
+    <div class="section-head" style="justify-content:center;text-align:center;display:block;">
+      <div class="kicker">Step 6</div>
+      <h2>Pick the level of help you want</h2>
+      <p class="sub" style="margin:8px auto 0;">Free gets you the planning engine. Premium gets you every deal, unlocked, the moment it appears. Concierge means we book it for you.</p>
+    </div>
+    <div class="tier-toggle">
+      <button class="active" onclick="setBillingCycle('monthly', this)">Monthly</button>
+      <button onclick="setBillingCycle('annual', this)">Annual — save ~20%</button>
+    </div>
+    <div class="grid-3" id="tierGrid"></div>
+    <div class="revenue-note">
+      💡 <b>How we make money without marking up your travel:</b> Nestflight earns a small referral commission when you book flights, hotels, or a travel credit card through a link we surface — the price you pay never changes. Premium and Concierge are subscription revenue on top of that, priced for what the time and money saved is actually worth.
+    </div>
+  </section>
+
+  <!-- STEP 7: TRIP BOARD -->
+  <section class="panel hidden" id="panel-tripboard">
+    <div id="tripBoardEmpty" class="empty-note">Pick a destination in Step 3 to build out its trip board — budget, day-by-day itinerary, and a packing list tuned to the trip.</div>
+    <div class="trip-board" id="tripBoard"></div>
+  </section>
+
+</main>
+
+<footer>Nestflight — an interactive concept prototype. All prices, deals, and calendars are illustrative sample data.</footer>
+
+<script>
+/* ---------------- MOCK DATA ---------------- */
+
+const schoolCalendars = {
+  "lincoln-elem-ca": { name:"Lincoln Elementary (Bay Area, CA)", breaks:[
+    {label:"Fall Break", start:"2026-10-12", end:"2026-10-16"},
+    {label:"Winter Break", start:"2026-12-21", end:"2027-01-04"},
+    {label:"Presidents' Weekend", start:"2027-02-13", end:"2027-02-15"},
+    {label:"Spring Break", start:"2027-03-22", end:"2027-03-26"},
+    {label:"Summer Break", start:"2027-06-11", end:"2027-08-24"}
+  ]},
+  "roosevelt-mid-tx": { name:"Roosevelt Middle School (Austin, TX)", breaks:[
+    {label:"Fall In-Service Long Weekend", start:"2026-10-09", end:"2026-10-12"},
+    {label:"Thanksgiving Break", start:"2026-11-23", end:"2026-11-27"},
+    {label:"Winter Break", start:"2026-12-19", end:"2027-01-05"},
+    {label:"Spring Break", start:"2027-03-15", end:"2027-03-19"},
+    {label:"Summer Break", start:"2027-05-29", end:"2027-08-17"}
+  ]},
+  "washington-high-il": { name:"Washington High (Chicago, IL)", breaks:[
+    {label:"Fall Break", start:"2026-10-15", end:"2026-10-16"},
+    {label:"Thanksgiving Break", start:"2026-11-25", end:"2026-11-29"},
+    {label:"Winter Break", start:"2026-12-23", end:"2027-01-05"},
+    {label:"Spring Break", start:"2027-03-29", end:"2027-04-02"},
+    {label:"Summer Break", start:"2027-06-05", end:"2027-08-20"}
+  ]},
+  "harborview-elem-wa": { name:"Harborview Elementary (Seattle, WA)", breaks:[
+    {label:"Mid-Winter Break", start:"2027-02-15", end:"2027-02-19"},
+    {label:"Winter Break", start:"2026-12-21", end:"2027-01-04"},
+    {label:"Spring Break", start:"2027-04-05", end:"2027-04-09"},
+    {label:"Summer Break", start:"2027-06-18", end:"2027-08-31"}
+  ]},
+  "homeschool-flex": { name:"Homeschool / Flexible schedule", breaks:[
+    {label:"Flexible — travel anytime", start:"2026-08-01", end:"2027-07-31"}
+  ]}
+};
+
+const loyaltyPrograms = [
+  {id:"united", name:"United MileagePlus", icon:"🔵", type:"airline", color:"#0b5cab"},
+  {id:"delta", name:"Delta SkyMiles", icon:"🔺", type:"airline", color:"#8a1a2b"},
+  {id:"amex", name:"Amex Membership Rewards", icon:"💳", type:"bank", color:"#0f6e5c"},
+  {id:"chase", name:"Chase Ultimate Rewards", icon:"🏦", type:"bank", color:"#1e5aa8"},
+  {id:"bonvoy", name:"Marriott Bonvoy", icon:"🏨", type:"hotel", color:"#5a2ea6"},
+  {id:"hilton", name:"Hilton Honors", icon:"🏩", type:"hotel", color:"#8a5a10"}
+];
+
+const destinations = [
+  {name:"Riviera Maya, Mexico", vibe:"Beach & relax", flight:"3.5h avg from US hubs", idealMonths:[1,2,3,11,12], img:"🏖️", gradient:"linear-gradient(135deg,#2196f3,#00bcd4)",
+    tags:["Beach","Pools","Water activities","Spa & relaxation"],
+    why:"Dry season + water temps peak, well before summer humidity and crowds hit.", cash:612, was:890, pts:"25k miles + $65", ptsProgram:"united"},
+  {name:"Costa Rica (Guanacaste)", vibe:"Adventure / outdoors", flight:"5h avg", idealMonths:[12,1,2,3], img:"🌴", gradient:"linear-gradient(135deg,#2e9e6b,#1b6e4a)",
+    tags:["Hiking","Animals & wildlife","Water activities"],
+    why:"Green season ends, trails dry out, and wildlife viewing peaks in the dry months.", cash:540, was:780, pts:"30k miles + $80", ptsProgram:"delta"},
+  {name:"Kyoto & Osaka, Japan", vibe:"City & culture", flight:"11h avg", idealMonths:[3,4,10,11], img:"⛩️", gradient:"linear-gradient(135deg,#ef6461,#e8a33d)",
+    tags:["Museums","History & landmarks","Food & markets"],
+    why:"Cherry blossom or fall foliage windows — the two shoulder seasons locals actually plan around.", cash:780, was:1120, pts:"70k miles + $110", ptsProgram:"chase"},
+  {name:"Orlando, FL (theme parks)", vibe:"Theme parks", flight:"2.5h avg", idealMonths:[1,2,5,9], img:"🎢", gradient:"linear-gradient(135deg,#8a5a10,#e8a33d)",
+    tags:["Theme park rides","Pools"],
+    why:"Post-holiday and pre-summer lulls mean shorter lines and softer hotel pricing.", cash:310, was:410, pts:"free night x3", ptsProgram:"bonvoy"},
+  {name:"Park City, Utah", vibe:"Ski / snow", flight:"3h avg", idealMonths:[1,2,3], img:"🎿", gradient:"linear-gradient(135deg,#123258,#1e88e5)",
+    tags:["Snow & skiing"],
+    why:"Peak snowpack after the holiday crowd clears out — best conditions of the season.", cash:390, was:560, pts:"free night x2", ptsProgram:"hilton"},
+  {name:"Lisbon & the Algarve, Portugal", vibe:"City & culture", flight:"8h avg", idealMonths:[4,5,9,10], img:"🏛️", gradient:"linear-gradient(135deg,#e8a33d,#ef6461)",
+    tags:["History & landmarks","Food & markets","Beach"],
+    why:"Shoulder season: warm enough for the coast, before summer fares and crowds spike.", cash:520, was:760, pts:"55k miles + $70", ptsProgram:"amex"},
+  {name:"Whistler, Canada", vibe:"Ski / snow", flight:"4h avg", idealMonths:[1,2,12], img:"🏔️", gradient:"linear-gradient(135deg,#0b2540,#1e88e5)",
+    tags:["Snow & skiing"],
+    why:"Mid-week, mid-winter pricing dips hard right after New Year's crowds clear.", cash:340, was:470, pts:"free night x2", ptsProgram:"bonvoy"},
+  {name:"Maui, Hawaii", vibe:"Beach & relax", flight:"6h avg", idealMonths:[4,5,9,10], img:"🌺", gradient:"linear-gradient(135deg,#00bcd4,#2e9e6b)",
+    tags:["Beach","Water activities","Spa & relaxation"],
+    why:"Shoulder months miss both whale-season crowds and peak summer fares.", cash:460, was:640, pts:"45k miles + $60", ptsProgram:"united"},
+  {name:"Banff, Canada", vibe:"Adventure / outdoors", flight:"3.5h avg", idealMonths:[6,7,9], img:"🏞️", gradient:"linear-gradient(135deg,#146c2e,#1e88e5)",
+    tags:["Hiking","Animals & wildlife"],
+    why:"Trails fully open, lakes at peak color, just ahead of peak-summer rates.", cash:410, was:580, pts:"free night x3", ptsProgram:"hilton"}
+];
+
+const interestOptions = ["Beach","Pools","Hiking","Animals & wildlife","Museums","Theme park rides","Food & markets","Sports","Water activities","Snow & skiing","History & landmarks","Spa & relaxation"];
+const vibeOptions = ["Beach & relax","Adventure / outdoors","City & culture","Theme parks","Ski / snow"];
+
+const membershipTiers = [
+  {id:"free", name:"Explorer", tagline:"The planning engine, free forever.", priceMonthly:0, priceAnnual:0,
+    feats:[["✓","Unlimited family travel profiles"],["✓","School calendar window matching"],["✓","Destination timing suggestions"],["✓","Flash sale & error fare alerts"],["🔒","Mistake fares & points sweet-spot deals"],["🔒","Real-time deal push notifications"]]},
+  {id:"premium", name:"Globetrotter", tagline:"Every deal, the moment it drops.", priceMonthly:12, priceAnnual:9.5, popular:true,
+    feats:[["✓","Everything in Explorer"],["✓","Full deals radar — mistake fares & points sweet spots"],["✓","Real-time push alerts for your saved routes"],["✓","Miles/points devaluation warnings"],["✓","Priority award-space search"],["🔒","A human books it for you"]]},
+  {id:"concierge", name:"Jetsetter Concierge", tagline:"You pick the trip. We do the rest.", priceMonthly:39, priceAnnual:32,
+    feats:[["✓","Everything in Globetrotter"],["✓","A real agent books flights, hotels & points transfers"],["✓","Custom itinerary planning with local partners"],["✓","24/7 in-trip rebooking support"],["✓","Annual travel & points strategy review"]]}
+];
+
+let billingCycle = "monthly";
+let membershipTier = "free";
+
+const dealTemplates = [
+  {tag:"mistake", label:"Mistake Fare", icon:"🚨", cls:"tag-mistake", route:"SFO → NRT", detail:"Business class, roundtrip", price:"$1,240", was:"$5,800", hrs:6},
+  {tag:"flash", label:"Flash Sale", icon:"⚡", cls:"tag-flash", route:"AUS → CUN", detail:"Roundtrip, nonstop, 4 seats left", price:"$219", was:"$410", hrs:18},
+  {tag:"points", label:"Points Sweet Spot", icon:"💎", cls:"tag-points", route:"ORD → LIS", detail:"Saver award, business class", price:"57.5k + $85", was:"110k typical", hrs:36},
+  {tag:"error", label:"Error Fare", icon:"🐛", cls:"tag-error", route:"SEA → HND", detail:"Premium economy, roundtrip", price:"$610", was:"$1,890", hrs:3},
+  {tag:"flash", label:"Flash Sale", icon:"⚡", cls:"tag-flash", route:"Marriott Cancun x3 nights", detail:"Resort category 6", price:"32k pts/night", was:"55k pts/night", hrs:26},
+  {tag:"points", label:"Points Sweet Spot", icon:"💎", cls:"tag-points", route:"Hilton Whistler x2 nights", detail:"Peak season, off-peak award chart", price:"50k pts/night", was:"$410/night cash", hrs:40}
+];
+
+/* ---------------- STATE ---------------- */
+
+let familyMembers = [
+  {id:1, name:"Alex", role:"parent", travelStyle:"Adventure / outdoors", interests:["Hiking","Food & markets"]},
+  {id:2, name:"Jamie", role:"parent", travelStyle:"Beach & relax", interests:["Beach","Spa & relaxation"]},
+  {id:3, name:"Maya", role:"kid", ageBand:"6-10", school:"lincoln-elem-ca", travelStyle:"Theme parks", interests:["Pools","Animals & wildlife"]},
+  {id:4, name:"Theo", role:"kid", ageBand:"11-13", school:"roosevelt-mid-tx", travelStyle:"Adventure / outdoors", interests:["Sports","Water activities"]}
+];
+let nextMemberId = 5;
+let miles = { united:62000, delta:0, amex:110000, chase:45000, bonvoy:180000, hilton:0 };
+let selectedDest = null;
+
+/* ---------------- NAV ---------------- */
+
+function goStep(step){
+  document.querySelectorAll('section.panel').forEach(p=>p.classList.add('hidden'));
+  document.getElementById('panel-'+step).classList.remove('hidden');
+  document.querySelectorAll('nav.steps button').forEach(b=>b.classList.toggle('active', b.dataset.step===step));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('stepNav').addEventListener('click', e=>{
+  if(e.target.tagName==='BUTTON') goStep(e.target.dataset.step);
+});
+
+/* ---------------- STEP 1: FAMILY TRAVEL PROFILES ---------------- */
+
+function schoolOptions(selected){
+  return Object.entries(schoolCalendars).map(([id,s])=>
+    `<option value="${id}" ${id===selected?'selected':''}>${s.name}</option>`).join('');
+}
+function vibeSelectOptions(selected){
+  return `<option value="" ${!selected?'selected':''}>Pick a travel style…</option>` +
+    vibeOptions.map(v=>`<option value="${v}" ${v===selected?'selected':''}>${v}</option>`).join('');
+}
+
+function renderMembers(){
+  const list = document.getElementById('memberList');
+  list.innerHTML = familyMembers.map((m,i)=>`
+    <div class="member-card">
+      <div class="member-top">
+        <div class="avatar">${(m.name||'?').charAt(0).toUpperCase()}</div>
+        <input type="text" value="${m.name}" placeholder="Name" oninput="familyMembers[${i}].name=this.value; renderDNA(); updateMemberCount();">
+        <div class="role-toggle">
+          <button class="${m.role==='parent'?'active':''}" onclick="setRole(${i},'parent')">Parent</button>
+          <button class="${m.role==='kid'?'active':''}" onclick="setRole(${i},'kid')">Kid</button>
+        </div>
+        <button class="remove-kid" onclick="removeMember(${i})" title="Remove">✕</button>
+      </div>
+      <div class="member-fields">
+        ${m.role==='kid' ? `
+          <select onchange="familyMembers[${i}].ageBand=this.value">
+            ${["3-5","6-10","11-13","14-17"].map(a=>`<option ${a===m.ageBand?'selected':''}>${a}</option>`).join('')}
+          </select>
+          <select onchange="familyMembers[${i}].school=this.value; renderWindows(); renderDestinations();">${schoolOptions(m.school)}</select>
+        ` : ``}
+        <select onchange="familyMembers[${i}].travelStyle=this.value; renderDNA(); renderDestinations();">${vibeSelectOptions(m.travelStyle)}</select>
+      </div>
+      <div class="chip-row">
+        ${interestOptions.map(opt=>`<span class="chip ${(m.interests||[]).includes(opt)?'on':''}" onclick="toggleInterest(${i},'${opt.replace(/'/g,"\\'")}')">${opt}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+  updateMemberCount();
+  renderDNA();
+}
+function updateMemberCount(){
+  const complete = familyMembers.filter(m=>m.name && m.travelStyle && (m.interests||[]).length>0).length;
+  document.getElementById('memberCount').textContent = `${complete}/${familyMembers.length} profiles complete`;
+}
+function setRole(i,role){
+  familyMembers[i].role = role;
+  if(role==='kid' && !familyMembers[i].school) familyMembers[i].school = Object.keys(schoolCalendars)[0];
+  if(role==='kid' && !familyMembers[i].ageBand) familyMembers[i].ageBand = "6-10";
+  renderMembers();
+  renderWindows();
+  renderDestinations();
+}
+function toggleInterest(i, opt){
+  const m = familyMembers[i];
+  m.interests = m.interests || [];
+  const idx = m.interests.indexOf(opt);
+  if(idx>-1) m.interests.splice(idx,1); else m.interests.push(opt);
+  renderMembers();
+  renderDestinations();
+}
+function addMember(role){
+  familyMembers.push({id:nextMemberId++, name:"", role, interests:[], travelStyle:"", school: role==='kid'?Object.keys(schoolCalendars)[0]:undefined, ageBand: role==='kid'?"6-10":undefined});
+  renderMembers();
+}
+function removeMember(i){ familyMembers.splice(i,1); renderMembers(); renderWindows(); renderDestinations(); }
+
+function dominantVibe(){
+  const counts = {};
+  familyMembers.forEach(m=>{ if(m.travelStyle) counts[m.travelStyle] = (counts[m.travelStyle]||0)+1; });
+  let best = null, bestCount = 0;
+  Object.entries(counts).forEach(([v,c])=>{ if(c>bestCount){ best=v; bestCount=c; } });
+  return best || "Surprise me";
+}
+function aggregateInterests(){
+  const counts = {};
+  familyMembers.forEach(m=>(m.interests||[]).forEach(t=>{ counts[t]=(counts[t]||0)+1; }));
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+}
+
+function renderDNA(){
+  const el = document.getElementById('dnaCard');
+  const vibe = dominantVibe();
+  const top = aggregateInterests().slice(0,4);
+  const complete = familyMembers.filter(m=>m.name && m.travelStyle && (m.interests||[]).length>0).length;
+  const pct = familyMembers.length ? Math.round((complete/familyMembers.length)*100) : 0;
+  el.innerHTML = `
+    <h3>🧬 Your Family Travel DNA</h3>
+    <div class="dna-row">
+      <span class="dna-pill">Blended vibe: <b>${vibe}</b></span>
+      ${top.map(([t])=>`<span class="dna-pill">${t}</span>`).join('')}
+    </div>
+    <div style="font-size:0.82rem;color:#cfe0f5;">Profile completeness</div>
+    <div class="dna-progress-track"><div class="dna-progress-fill" style="width:${pct}%"></div></div>
+    <div class="dna-note">${pct<100 ? `Finish everyone's profile to unlock fully personalized concierge-grade matches.` : `All profiles complete — matching is running at full personalization.`}</div>
+  `;
+}
+
+/* ---------------- STEP 2: WINDOW MATCHING ---------------- */
+
+function toDate(s){ return s instanceof Date ? s : new Date(s+"T00:00:00"); }
+function fmt(d){ return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+
+function overlap(rangeA, rangeB){
+  const start = new Date(Math.max(toDate(rangeA.start), toDate(rangeB.start)));
+  const end = new Date(Math.min(toDate(rangeA.end), toDate(rangeB.end)));
+  if(start > end) return null;
+  return {start, end};
+}
+
+function computeWindows(){
+  const kidBreaks = familyMembers.filter(m=>m.role==='kid' && m.school).map(m=>schoolCalendars[m.school].breaks);
+  if(kidBreaks.length===0) return [];
+  let windows = kidBreaks[0].map(b=>({label:b.label, start:toDate(b.start), end:toDate(b.end), full:true}));
+  for(let i=1;i<kidBreaks.length;i++){
+    const next = [];
+    windows.forEach(w=>{
+      kidBreaks[i].forEach(b=>{
+        const o = overlap({start:w.start,end:w.end}, b);
+        if(o){
+          next.push({label:w.label+" ∩ "+b.label, start:o.start, end:o.end, full:daysBetween(o.start,o.end)>=daysBetween(w.start,w.end)-1});
+        }
+      });
+    });
+    windows = next;
+  }
+  return windows.filter(w=>daysBetween(w.start,w.end) >= 1).sort((a,b)=>a.start-b.start);
+}
+
+function labelWindow(w){
+  const nights = daysBetween(w.start,w.end);
+  if(nights>=15) return {tag:"Extended break", note:"Long enough for a big international trip"};
+  if(nights>=7) return {tag:"Full week open", note:"Solid week — plenty of destinations in play"};
+  if(nights>=3) return {tag:"Long weekend", note:"Best for a 3–6hr flight radius"};
+  return {tag:"Short gap", note:"Regional trip territory"};
+}
+
+function renderWindows(){
+  const windows = computeWindows();
+  const el = document.getElementById('windowResults');
+  if(windows.length===0){
+    el.innerHTML = '<div class="empty-note">No overlapping windows found — try aligning schools or add a homeschool/flex kid.</div>';
+    return;
+  }
+  el.innerHTML = windows.map(w=>{
+    const meta = labelWindow(w);
+    const nights = daysBetween(w.start,w.end);
+    return `<div class="window-card">
+      <span class="tag">${meta.tag}</span>
+      <h3>${fmt(w.start)} – ${fmt(w.end)}</h3>
+      <div class="dates">${nights} day${nights===1?'':'s'} off, all kids</div>
+      <div class="${w.full? 'overlap-note':'gap-note'}">${w.full? '✓ Fully overlapping across kids' : '⚠ Partial overlap — double check school calendars'}</div>
+      <p style="font-size:0.82rem;color:var(--gray);margin-top:8px;">${meta.note}</p>
+    </div>`;
+  }).join('');
+}
+
+function monthOf(d){ return d.getMonth()+1; }
+
+function runMatch(){
+  renderWindows();
+  renderDestinations();
+  goStep('windows');
+}
+
+/* ---------------- STEP 3: DESTINATIONS ---------------- */
+
+function renderDestinations(){
+  const windows = computeWindows();
+  const rawVibe = document.getElementById('prefVibe').value;
+  const vibe = (!rawVibe || rawVibe==="Use family blend") ? dominantVibe() : rawVibe;
+  const familyTags = new Set(aggregateInterests().map(([t])=>t));
+  const el = document.getElementById('destResults');
+
+  let candidateMonths = new Set();
+  windows.forEach(w=>{
+    let d = new Date(w.start);
+    while(d<=w.end){ candidateMonths.add(d.getMonth()+1); d.setDate(d.getDate()+10); }
+  });
+  if(candidateMonths.size===0){ for(let m=1;m<=12;m++) candidateMonths.add(m); }
+
+  let scored = destinations.map(d=>{
+    let score = 0;
+    const monthHit = d.idealMonths.some(m=>candidateMonths.has(m));
+    if(monthHit) score += 60;
+    if(vibe==="Surprise me") score += 20;
+    else if(d.vibe===vibe) score += 35;
+    const tagHits = (d.tags||[]).filter(t=>familyTags.has(t)).length;
+    score += tagHits * 8;
+    score += Math.round((1 - d.cash/1000) * 10);
+    return {...d, score, monthHit, tagHits};
+  }).sort((a,b)=>b.score-a.score).slice(0,6);
+
+  el.innerHTML = scored.map(d=>`
+    <div class="dest-card">
+      <div onclick="openTripBoard('${d.name.replace(/'/g,"\\'")}')" style="cursor:pointer;">
+        <div class="dest-img" style="background:${d.gradient}">${d.img}</div>
+        <div class="dest-body">
+          <h3>${d.name} <span class="match-score">${d.monthHit? 'Ideal timing':'Good fit'}</span></h3>
+          <div class="dest-meta">${d.flight} · ${d.vibe}${d.tagHits? ` · matches ${d.tagHits} family interest${d.tagHits===1?'':'s'}`:''}</div>
+          <div class="dest-why">${d.why}</div>
+          <div class="dest-price-row">
+            <div class="price"><span class="was">$${d.was}</span>$${d.cash}<span style="font-size:0.72rem;color:var(--gray);font-weight:400;"> /person</span></div>
+            <div class="pts-pill">or ${d.pts}</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 16px 16px;">
+        <button class="book-btn" style="width:100%;" onclick="event.stopPropagation(); openTripBoard('${d.name.replace(/'/g,"\\'")}')">Plan this trip →</button>
+      </div>
+    </div>
+  `).join('');
+}
+document.getElementById('prefVibe').addEventListener('change', renderDestinations);
+
+/* ---------------- STEP 4: DEALS ---------------- */
+
+function renderDeals(shuffle){
+  const el = document.getElementById('dealResults');
+  let list = [...dealTemplates];
+  if(shuffle) list = list.sort(()=>Math.random()-0.5);
+  const premiumOnly = t => t==='mistake' || t==='points';
+  el.innerHTML = list.map(d=>{
+    const locked = premiumOnly(d.tag) && membershipTier==='free';
+    return `
+    <div class="deal-row ${locked?'locked':''}">
+      <div class="deal-icon" style="background:#f2f4f8;">${d.icon}</div>
+      <div class="deal-main">
+        <div class="deal-title">${d.route} <span class="deal-tag ${d.cls}" style="margin-left:8px;">${d.label}</span></div>
+        <div class="deal-sub">${d.detail}</div>
+        ${!locked?`<button class="book-btn" onclick="alert('This would hand off to our booking partner — Nestflight earns a small referral commission, your price stays the same.')">Book now →</button><div class="affiliate-note">We may earn a commission on bookings made through this link.</div>`:''}
+      </div>
+      <div class="deal-countdown">⏳ ${d.hrs}h left</div>
+      <div class="deal-price">
+        <div class="amt">${d.price}</div>
+        <div style="font-size:0.75rem;color:var(--gray);text-decoration:line-through;">${d.was}</div>
+      </div>
+      ${locked?`<div class="lock-overlay"><span style="font-weight:700;color:var(--navy);">🔒 Premium only</span><button class="unlock-btn" onclick="goStep('membership')">Unlock</button></div>`:''}
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- STEP 5: MILES & POINTS ---------------- */
+
+function renderMiles(){
+  const el = document.getElementById('milesList');
+  el.innerHTML = loyaltyPrograms.map(p=>`
+    <div class="miles-row">
+      <div class="prog-icon" style="background:${p.color}20;">${p.icon}</div>
+      <div>
+        <div class="prog-name">${p.name}</div>
+        <div class="prog-sub">${p.type==='airline'?'Airline miles':p.type==='hotel'?'Hotel points':'Transferable bank points'}</div>
+      </div>
+      <input type="number" step="1000" value="${miles[p.id]}" oninput="miles['${p.id}']=parseInt(this.value)||0; renderMilesInsights();">
+    </div>
+  `).join('');
+  renderMilesInsights();
+}
+
+function renderMilesInsights(){
+  const el = document.getElementById('milesInsights');
+  const insights = [];
+
+  const totalAirline = loyaltyPrograms.filter(p=>p.type==='airline').reduce((s,p)=>s+miles[p.id],0);
+  const totalBank = loyaltyPrograms.filter(p=>p.type==='bank').reduce((s,p)=>s+miles[p.id],0);
+  const totalHotel = loyaltyPrograms.filter(p=>p.type==='hotel').reduce((s,p)=>s+miles[p.id],0);
+
+  destinations.forEach(d=>{
+    const prog = loyaltyPrograms.find(p=>p.id===d.ptsProgram);
+    if(!prog) return;
+    const balance = miles[prog.id] + (prog.type!=='airline' && prog.type!=='hotel' ? totalBank : 0);
+    const neededMatch = d.pts.match(/(\d+)k/);
+    const needed = neededMatch ? parseInt(neededMatch[1])*1000 : null;
+    if(needed && (miles[prog.id] >= needed || (prog.type==='bank' && totalBank>=needed))){
+      insights.push(`<div style="padding:10px 0;border-bottom:1px solid var(--line);"><b>${d.name}</b> — your ${prog.name} balance covers this at <b>${d.pts}</b> for one traveler.</div>`);
+    }
+  });
+
+  if(totalBank >= 60000){
+    insights.unshift(`<div style="padding:10px 0;border-bottom:1px solid var(--line);">💡 You're holding <b>${totalBank.toLocaleString()}</b> transferable bank points — these can move to whichever airline or hotel program has the best award space for your dates. Don't transfer speculatively; transfer only once you've picked the flight.</div>`);
+  }
+  if(totalHotel >= 150000){
+    insights.unshift(`<div style="padding:10px 0;border-bottom:1px solid var(--line);">🏨 <b>${totalHotel.toLocaleString()}</b> hotel points on hand — enough for several free nights. Category 1–4 hotels usually give the best cents-per-point value, not the flashy category 8 resorts.</div>`);
+  }
+  if(insights.length===0){
+    insights.push(`<div class="empty-note">Add balances on the left to see which destinations your points already cover.</div>`);
+  }
+  el.innerHTML = insights.join('');
+}
+
+/* ---------------- STEP 6: MEMBERSHIP ---------------- */
+
+function setBillingCycle(cycle, btn){
+  billingCycle = cycle;
+  document.querySelectorAll('.tier-toggle button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTiers();
+}
+
+function selectTier(id){
+  membershipTier = id;
+  updatePlanBadge();
+  renderTiers();
+  renderDeals(false);
+  alert(`Plan set to ${membershipTiers.find(t=>t.id===id).name}. In the live product this would open checkout — right now it just unlocks the demo.`);
+}
+
+function updatePlanBadge(){
+  const badge = document.getElementById('planBadge');
+  const t = membershipTiers.find(t=>t.id===membershipTier);
+  badge.textContent = (t.id==='free'?'Free plan':t.name+' ✓');
+  badge.className = 'plan-badge' + (t.id!=='free' ? ' '+t.id : '');
+}
+
+function renderTiers(){
+  const el = document.getElementById('tierGrid');
+  el.innerHTML = membershipTiers.map(t=>{
+    const price = billingCycle==='monthly' ? t.priceMonthly : t.priceAnnual;
+    return `
+    <div class="tier-card ${t.popular?'popular':''}">
+      ${t.popular?'<div class="tier-popular-flag">Most popular</div>':''}
+      <h3>${t.name}</h3>
+      <div class="tier-sub">${t.tagline}</div>
+      <div class="tier-price">${price===0?'Free':'$'+price}${price>0?`<span>/mo${billingCycle==='annual'?', billed annually':''}</span>`:''}</div>
+      <ul class="tier-feats">
+        ${t.feats.map(f=>`<li><span class="ico">${f[0]}</span><span>${f[1]}</span></li>`).join('')}
+      </ul>
+      <button class="tier-select-btn" style="background:${membershipTier===t.id?'var(--green)':'var(--navy)'};color:#fff;" onclick="selectTier('${t.id}')">${membershipTier===t.id?'✓ Current plan':'Choose '+t.name}</button>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- STEP 7: TRIP BOARD ---------------- */
+
+const itineraryTemplates = {
+  "Beach & relax":[
+    ["Arrival","Land, transfer to resort, sunset dinner on the water."],
+    ["Beach & pool","Full beach day. Kids' club if the resort has one — book it in advance."],
+    ["Excursion","Half-day snorkeling or catamaran trip; nap/pool in the afternoon."],
+    ["Slow day","No plans. This is the point of the trip."],
+    ["Local flavor","Market or town visit, family cooking class."],
+    ["Last splash","Final beach morning, pack, late flight home."]
+  ],
+  "Adventure / outdoors":[
+    ["Arrival","Land, settle in, easy walk to acclimate."],
+    ["Trail day 1","Family-friendly hike matched to the youngest kid's stamina."],
+    ["Water day","Rafting, kayaking, or a swim spot — high fun, low risk option."],
+    ["Wildlife / nature","Guided nature walk or reserve visit."],
+    ["Trail day 2","A slightly bigger hike or bike day for the ones who want it."],
+    ["Wind down","Short local activity, pack, depart."]
+  ],
+  "City & culture":[
+    ["Arrival","Land, orientation walk, easy dinner near the hotel."],
+    ["Icon day","The one must-see sight — book skip-the-line tickets ahead."],
+    ["Neighborhood day","Wander a local district, food-focused, few fixed plans."],
+    ["Museum / hands-on","Pick the one museum that's actually kid-interactive."],
+    ["Day trip","Train or short drive to a nearby town."],
+    ["Free morning","Souvenir shopping, pack, afternoon flight."]
+  ],
+  "Theme parks":[
+    ["Arrival","Land, check in, evening at the resort pool."],
+    ["Park day 1","Rope-drop the headliner rides, afternoon break, return at night for shows."],
+    ["Park day 2","Second park or water park — mid-day break built in."],
+    ["Rest day","Resort day, no park — this saves the trip for younger kids."],
+    ["Park day 3","Whichever park had the best stuff left, half-day only."],
+    ["Departure","Late check-out, airport."]
+  ],
+  "Ski / snow":[
+    ["Arrival","Land, gear rental, easy first run or lesson."],
+    ["Lesson day","Group or private lessons for the kids, parents free-ski nearby."],
+    ["Full mountain day","Everyone skis/rides together, hot chocolate breaks built in."],
+    ["Rest / other snow","Tubing, snowshoeing, or a spa day — ski legs need a break."],
+    ["Last big day","Final full mountain day, best conditions saved for last."],
+    ["Departure","Late morning, pack gear, fly home."]
+  ]
+};
+
+function openTripBoard(name){
+  selectedDest = destinations.find(d=>d.name===name);
+  document.getElementById('tripBoardEmpty').classList.add('hidden');
+  const board = document.getElementById('tripBoard');
+  board.classList.add('show');
+
+  const numTravelers = Math.max(familyMembers.length, 3);
+  const nights = 6;
+  const flightTotal = selectedDest.cash * numTravelers;
+  const hotelTotal = Math.round(selectedDest.cash*0.55) * nights;
+  const foodTotal = 65 * numTravelers * nights;
+  const activitiesTotal = 90 * numTravelers;
+  const grandTotal = flightTotal + hotelTotal + foodTotal + activitiesTotal;
+
+  const itin = itineraryTemplates[selectedDest.vibe] || itineraryTemplates["Beach & relax"];
+
+  board.innerHTML = `
+    <div class="tb-header">
+      <div>
+        <h2>${selectedDest.img} ${selectedDest.name}</h2>
+        <p>${nights} nights · ${numTravelers} travelers · ${selectedDest.why}</p>
+      </div>
+      <div class="tb-stats-row">
+        <div class="tb-stat"><div class="num">$${grandTotal.toLocaleString()}</div><div class="lbl">Est. total</div></div>
+        <div class="tb-stat"><div class="num">${selectedDest.pts}</div><div class="lbl">Points option</div></div>
+        <div class="tb-stat"><div class="num">${nights}</div><div class="lbl">Nights</div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card" style="padding:22px;">
+        <h3 style="margin-bottom:16px;">Budget breakdown</h3>
+        ${budgetRow("Flights", flightTotal, grandTotal)}
+        ${budgetRow("Hotel", hotelTotal, grandTotal)}
+        ${budgetRow("Food", foodTotal, grandTotal)}
+        ${budgetRow("Activities", activitiesTotal, grandTotal)}
+        <p style="font-size:0.8rem;color:var(--gray);margin-top:12px;">💡 Booking flights with ${selectedDest.pts} instead of cash would cut roughly $${flightTotal.toLocaleString()} from this total.</p>
+        <button class="book-btn" onclick="alert('In the live product this hands off to our flight/hotel booking partner — Nestflight earns a small referral commission, your price stays the same.')">Book flights & hotel →</button>
+        <div class="affiliate-note">We may earn a commission on bookings made through this link.</div>
+      </div>
+      <div class="card" style="padding:22px;">
+        <h3 style="margin-bottom:12px;">Packing list — ${selectedDest.vibe}</h3>
+        <div class="pack-list">${packingList(selectedDest.vibe).map(i=>`<label><input type="checkbox">${i}</label>`).join('')}</div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:22px;margin-top:20px;">
+      <h3 style="margin-bottom:10px;">Day-by-day sketch</h3>
+      ${itin.map((d,i)=>`<div class="itin-day"><div class="day-num">Day ${i+1}</div><div class="day-body"><b>${d[0]}</b>${d[1]}</div></div>`).join('')}
+    </div>
+
+    <div class="flex-between" style="margin-top:20px;">
+      <button class="small-btn ghost" onclick="goStep('destinations')">← Back to destinations</button>
+      <button class="small-btn" onclick="goStep('deals')">Check deals radar for this route →</button>
+    </div>
+  `;
+  goStep('tripboard');
+}
+
+function budgetRow(label, amt, total){
+  const pct = Math.round((amt/total)*100);
+  return `<div class="budget-bar-row">
+    <div class="bb-top"><span>${label}</span><b>$${amt.toLocaleString()}</b></div>
+    <div class="budget-track"><div class="budget-fill" style="width:${pct}%"></div></div>
+  </div>`;
+}
+
+function packingList(vibe){
+  const base = ["Passports / IDs","Phone chargers","Reusable water bottles","Kids' entertainment for the flight","Basic first-aid kit"];
+  const byVibe = {
+    "Beach & relax":["Reef-safe sunscreen","Swimsuits x2 each","Rash guards for kids","Beach bag & towels","Waterproof phone pouch"],
+    "Adventure / outdoors":["Hiking shoes","Bug spray","Refillable water bladders","Light rain shells","Small first-aid + blister kit"],
+    "City & culture":["Comfortable walking shoes","Day backpack","Portable phone battery","Light layers","Museum/skip-line tickets printed"],
+    "Theme parks":["Comfortable closed-toe shoes","Portable phone battery","Ponchos (water rides)","Autograph books","Cooling towels"],
+    "Ski / snow":["Base layers x2","Ski gloves + spares","Goggles","Hand warmers","Lip balm w/ SPF"]
+  };
+  return base.concat(byVibe[vibe]||[]);
+}
+
+/* ---------------- INIT ---------------- */
+renderMembers();
+renderWindows();
+renderDestinations();
+renderDeals(false);
+renderMiles();
+renderTiers();
+updatePlanBadge();
+</script>
+</body>
+</html>
