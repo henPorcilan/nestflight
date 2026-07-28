@@ -58,16 +58,18 @@ Step 1 of the prototype went from a bare "add a kid + pick a school" form to a f
 
 Target revenue mix by end of year one: ~45% subscriptions, ~45% affiliate/referral, ~10% early B2B pilots.
 
-## Roadmap
+## Roadmap — compressed for time-to-market
+
+Original plan spread Phase 0 over 8 weeks. Given the priority on speed, we're cutting that to roughly 3 weeks by running validation and build in parallel instead of sequentially, and by shipping the landing page and waitlist same-week rather than treating them as a research deliverable.
 
 | Phase | Timeline | Focus & key deliverables |
 |---|---|---|
-| **0 — Validate** | Weeks 0–8 | Landing page + waitlist; 30–50 parent interviews; confirm 2+ realistic calendar sources (ICS feeds, not scraped PDFs); define MVP scope and success metric. |
-| **1 — MVP** | Months 2–4 | Ship profile builder, ICS calendar import, destination matching, curated deals feed. Free tier only. Instrument activation and week-2 return rate. |
-| **2 — Monetize** | Months 4–8 | Launch Globetrotter subscription; integrate 1–2 real affiliate networks + a card-referral partner; automate deal sourcing via a fare-alert API; add refer-a-friend loop. Goal: first $10–20k MRR. |
-| **3 — Scale** | Months 8–14 | Launch Jetsetter Concierge with a small human-agent team; pursue 2–3 school-district/employer-benefit pilots; expand calendar coverage nationally; evaluate a native mobile app. |
+| **0 — Validate** | Weeks 0–3 | Landing page + waitlist live day 1; parent interviews and MVP build run in parallel, not sequentially; confirm 2+ realistic calendar sources (ICS feeds, not scraped PDFs); first affiliate application submitted week 1; MVP scope locked (see MVP-SCOPE.md) instead of debated. |
+| **1 — MVP** | Weeks 3–7 | Ship profile builder, ICS calendar import, destination matching, curated deals feed. Free tier only. Instrument activation and return rate from day 1 of launch. |
+| **2 — Monetize** | Weeks 7–14 | Launch Globetrotter subscription; integrate 1–2 real affiliate networks + a card-referral partner; automate deal sourcing via a fare-alert API; add refer-a-friend loop. Goal: first $10–20k MRR. |
+| **3 — Scale** | Weeks 14–24 | Launch Jetsetter Concierge with a small human-agent team; pursue 2–3 school-district/employer-benefit pilots; expand calendar coverage nationally; evaluate a native mobile app. |
 
-We deliberately do not build the concierge/booking layer, and do not chase B2B deals, until the free product proves organic return usage.
+We deliberately do not build the concierge/booking layer, and do not chase B2B deals, until the free product proves organic return usage — compressing the timeline changes speed, not the sequencing logic. See MVP-SCOPE.md for the exact cut line on what ships in Phase 1.
 
 ## Key metrics to watch
 
