@@ -2,9 +2,9 @@
 
 Family trips, planned the way a frequent flyer would do it: cross-reference the kids' school calendars, match destinations to the ideal time of year, and surface the deals and points redemptions that make the trip cheaper.
 
-**Status:** Phase 0 — Validate, on a compressed ~3-week timeline (time-to-market is the priority — see `ROADMAP.md`). Landing page copy and waitlist form are built; enable GitHub Pages in repo Settings → Pages to make `index.html` publicly live. See the open [Issues](../../issues) for what's next.
+**Status:** Phase 0 — Validate, on a compressed ~3-week timeline (time-to-market is the priority — see `ROADMAP.md`). Landing page is live with a working waitlist form. See the open [Issues](../../issues) for what's next — parent interviews and the first affiliate application are the two things left in this phase.
 
-**Try it now:** [landing page](index.html) (once Pages is enabled) · [interactive prototype](prototype/index.html)
+**Try it now:** [landing page](https://henporcilan.github.io/nestflight/) (live) · [interactive prototype](prototype/index.html)
 
 ## What's in this repo
 
