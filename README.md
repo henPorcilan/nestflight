@@ -14,6 +14,7 @@ Family trips, planned the way a frequent flyer would do it: cross-reference the 
 | `prototype/index.html` | Interactive concept prototype — family travel profiles, school-calendar window matching, destination scoring, deals radar, miles/points tracker, membership tiers, and a per-trip budget/itinerary board. Single-file HTML, open it directly in a browser. |
 | `ROADMAP.md` | CEO-level assessment: market sizing, competitive landscape, monetization model, compressed phased roadmap, key metrics, and risks. |
 | `MVP-SCOPE.md` | The ruthless cut line for what ships in Phase 1 — what's in, what's explicitly deferred. |
+| `MOONSHOT.md` | Phase 4 strategic addendum — the bigger data-business case (demand forecasting, group buying, distribution hacks) that doesn't block the near-term MVP. |
 | `docs/landing-page-copy.md` | Source copy for the live landing page. |
 | `docs/parent-interview-script.md` | 20-minute discovery interview script for validating the concept with 30–50 parents (Phase 0). |
 | `docs/recruitment-outreach.md` | Ready-to-post copy for recruiting interview participants (personal network, FB groups, listservs). |
