@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nestflight — Get Early Access</title>
 <meta name="description" content="Family trips, planned around your kids' school calendar. Join the Nestflight waitlist.">
+
+<!-- Open Graph / social share preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nestflight — Your kids' school calendar just told you where to go on vacation">
+<meta property="og:description" content="Nestflight cross-references school breaks, ideal travel season, and flight/hotel deals to tell families when and where to go — before the fares catch up.">
+<meta property="og:url" content="https://henporcilan.github.io/nestflight/">
+<meta property="og:image" content="https://henporcilan.github.io/nestflight/social-card.png">
+<meta property="og:site_name" content="Nestflight">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nestflight — Your kids' school calendar just told you where to go on vacation">
+<meta name="twitter:description" content="Cross-references school breaks, ideal travel season, and flight/hotel deals — before the fares catch up.">
+<meta name="twitter:image" content="https://henporcilan.github.io/nestflight/social-card.png">
 <style>
   :root{
     --navy:#0b2540; --navy2:#123258; --sky:#1e88e5; --sky-light:#e8f3fd;
@@ -58,6 +72,17 @@
 
   footer{padding:28px 0;text-align:center;color:var(--gray);font-size:0.82rem;background:var(--bg);}
   footer a{color:var(--sky);text-decoration:none;}
+
+  section.referral{padding:48px 0;text-align:center;background:var(--sky-light);}
+  section.referral h2{font-size:1.3rem;margin-bottom:8px;color:var(--navy);}
+  section.referral p{color:var(--gray);font-size:0.95rem;max-width:520px;margin:0 auto 20px;}
+  .ref-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn-sm{display:inline-block;padding:11px 22px;border-radius:10px;font-weight:700;font-size:0.92rem;text-decoration:none;cursor:pointer;border:none;transition:.15s;}
+  .btn-sm.solid{background:var(--gold);color:#241a05;}
+  .btn-sm.solid:hover{background:#f2b256;}
+  .btn-sm.outline{background:transparent;color:var(--navy);border:1.5px solid var(--navy);}
+  .btn-sm.outline:hover{background:rgba(11,37,64,0.06);}
+  #copyMsg{display:block;margin-top:12px;font-size:0.85rem;color:var(--green);font-weight:600;min-height:1.2em;}
 </style>
 </head>
 <body>
@@ -145,13 +170,55 @@
   </div>
 </section>
 
+<section class="referral">
+  <div class="wrap">
+    <h2>Know a family juggling the same school-break chaos?</h2>
+    <p>Forward this along — the matching gets better for everyone as more families with overlapping breaks join.</p>
+    <div class="ref-actions">
+      <button id="shareBtn" class="btn-sm solid">Share this page</button>
+      <button id="copyBtn" class="btn-sm outline">Copy link</button>
+    </div>
+    <span id="copyMsg"></span>
+  </div>
+</section>
+
 <footer>
   Nestflight — a concept in validation. See the <a href="https://github.com/henPorcilan/nestflight" target="_blank" rel="noopener">project on GitHub</a> or try the <a href="prototype/index.html">interactive prototype</a>. · <a href="privacy.html">Privacy Policy</a>
   <br><br>
   Airline, hotel, or school partner? <a href="mailto:henporcilan@gmail.com?subject=Nestflight%20partnership%20inquiry">Get in touch →</a>
-  <br><br>
-  Believe in this before it's built? <a href="https://ko-fi.com/henporcilan" target="_blank" rel="noopener">Support development →</a>
 </footer>
+
+<script>
+(function(){
+  var pageUrl = "https://henporcilan.github.io/nestflight/";
+  var shareBtn = document.getElementById('shareBtn');
+  var copyBtn = document.getElementById('copyBtn');
+  var copyMsg = document.getElementById('copyMsg');
+
+  shareBtn.addEventListener('click', function(){
+    if (navigator.share) {
+      navigator.share({
+        title: 'Nestflight',
+        text: 'Nestflight plans family trips around your kids\' school calendar — thought of you:',
+        url: pageUrl
+      }).catch(function(){});
+    } else {
+      var subject = encodeURIComponent('Thought you\'d like this — Nestflight');
+      var body = encodeURIComponent('Nestflight plans family trips around your kids\' school calendar, matches to the best season, and flags deals: ' + pageUrl);
+      window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+    }
+  });
+
+  copyBtn.addEventListener('click', function(){
+    function done(){ copyMsg.textContent = 'Link copied!'; setTimeout(function(){ copyMsg.textContent = ''; }, 2500); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pageUrl).then(done).catch(function(){ copyMsg.textContent = pageUrl; });
+    } else {
+      copyMsg.textContent = pageUrl;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

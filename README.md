@@ -21,6 +21,8 @@ Family trips, planned the way a frequent flyer would do it: cross-reference the 
 | `docs/affiliate-network-research.md` | Which flight/hotel/credit-card affiliate networks are realistic to get approved for pre-launch, and in what order to apply. |
 | `docs/affiliate-application-answers.md` | Ready-to-paste answers for each affiliate network's application form. |
 | `docs/domain-shortlist.md` | Candidate domain names to check once the wedge is validated. |
+| `docs/social-launch-copy.md` | Ready-to-post launch copy for X/Twitter, LinkedIn, and relevant Reddit communities. |
+| `social-card.png` | Open Graph / Twitter card image shown when the landing page link is shared. |
 | `interview-tracker.xlsx` | Spreadsheet for logging the 30–50 discovery interviews, with a live summary/progress sheet. |
 
 ## Why this exists
