@@ -78,7 +78,7 @@ We deliberately do not build the concierge/booking layer, and do not chase B2B d
 - **Free-to-paid conversion:** target 3–6% of monthly actives to Globetrotter within 90 days.
 - **Affiliate conversion rate** on "Book now" clicks, and blended revenue per booked trip.
 - **Deal-alert accuracy:** % of surfaced deals still bookable at the stated price when clicked — a trust metric as much as a revenue one.
-- **Real payment intent:** actual dollars from strangers, not just survey answers — the single hardest validation signal available pre-launch. Ko-fi (Stripe-connected) is a candidate mechanism for this, pending a branding decision — see Issue tracker — since the existing Ko-fi account already represents an unrelated project. Once resolved, any organic support from people outside our own network is a stronger buy signal than an interview answer.
+- **Real payment intent:** actual dollars from strangers, not just survey answers — the single hardest validation signal available pre-launch. A "Support development" link (Ko-fi.com/henporcilan, Stripe-connected, shared across Hen's projects) is live in the site footer; any organic support from people outside our own network is a stronger buy signal than an interview answer.
 
 ## Risks and mitigations
 
