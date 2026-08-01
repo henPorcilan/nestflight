@@ -1,48 +1,52 @@
 # Parent Recruitment Outreach — Ready to Post
 
-Goal: fill the 30-interview pipeline this week. Post to personal network first (highest response rate), then parent Facebook groups / Nextdoor / school listservs. Swap in the real waitlist link before posting.
+Goal: fill the 30–50 interview pipeline this week, with as little manual back-and-forth as possible.
+
+**Primary channel: the survey link, not a scheduling reply.** Every message below drops people straight into the self-serve form — no "reply here and I'll send you a link" step. The form itself captures the answers, and question 12 asks if they're open to a follow-up call — so the only manual work left is calling the subset who opt in. Post to personal network first (highest response rate), then parent Facebook groups / Nextdoor / school listservs.
+
+**Survey link:** https://docs.google.com/forms/d/e/1FAIpQLScZ0_fr1aDsu0soCJNT7oSv1RwE1loPJsyiSp8srjeXXZTOEA/viewform
 
 ---
 
 ## Personal network (text/DM version — highest conversion, use first)
 
-Hey! Random ask — I'm working on something for parents juggling school schedules and travel planning, and I'd love 15 minutes of your brain. No pitch, just want to hear how you actually plan family trips around school breaks today. Free coffee/your choice of bribe. Know anyone else with school-age kids who'd be up for the same? Would really appreciate it.
+Hey! Random ask — I'm working on something for parents juggling school schedules and travel planning. Takes 5 min: https://docs.google.com/forms/d/e/1FAIpQLScZ0_fr1aDsu0soCJNT7oSv1RwE1loPJsyiSp8srjeXXZTOEA/viewform — just want to hear how you actually plan family trips around school breaks today. Know anyone else with school-age kids who'd fill it out too? Would really appreciate it.
 
 ---
 
 ## Facebook parent groups / Nextdoor (longer version)
 
-**Quick favor from a fellow parent — 15 min, no strings attached**
+**Quick favor from a fellow parent — 5 min, no strings attached**
 
-I'm working on a tool to help families plan trips around school calendars (timing, deals, the works) and I want to build it based on how people actually plan today, not guesses. Looking for parents of school-age kids for a quick 15-20 min call — you talk, I listen, that's it. Not selling anything, no product to look at yet.
+I'm working on a tool to help families plan trips around school calendars (timing, deals, the works) and I want to build it based on how people actually plan today, not guesses. Not selling anything, no product to look at yet — just an anonymous 5-minute survey.
 
 If you've ever:
 - Missed a good flight deal because you found it too late
 - Booked a trip and then realized the timing/season was rough
 - Had to juggle two+ kids' different school calendars to find a window that works
 
-...I'd love to hear about it. Drop a comment or DM me and I'll send a couple of times that work. Happy to return the favor for anything you're working on too.
+...take the survey here: https://docs.google.com/forms/d/e/1FAIpQLScZ0_fr1aDsu0soCJNT7oSv1RwE1loPJsyiSp8srjeXXZTOEA/viewform. There's an optional question at the end if you'd be up for a quick follow-up call — otherwise the survey alone is a huge help.
 
 ---
 
 ## School listserv / PTA email version
 
-Subject: Quick research favor — 15 min on family trip planning
+Subject: Quick research favor — 5 min on family trip planning
 
 Hi all,
 
-I'm doing some early-stage research on family travel planning (specifically, how school calendars factor into when/where families go on trips) and I'm looking for parents willing to do a short 15-20 minute call. This isn't a sales pitch — there's no product to buy, I'm just trying to understand how people currently handle this.
+I'm doing some early-stage research on family travel planning (specifically, how school calendars factor into when/where families go on trips). This isn't a sales pitch — there's no product to buy, I'm just trying to understand how people currently handle this.
 
-If you're open to it, reply here or email me directly and I'll send a scheduling link. Thanks in advance — happy to share what I learn once I've done a batch of these, in case it's useful to anyone else juggling the same school-break-planning chaos.
+If you're open to it, here's a short 5-minute survey: https://docs.google.com/forms/d/e/1FAIpQLScZ0_fr1aDsu0soCJNT7oSv1RwE1loPJsyiSp8srjeXXZTOEA/viewform. Thanks in advance — happy to share what I learn once I've done a batch of these, in case it's useful to anyone else juggling the same school-break-planning chaos.
 
 ---
 
-## Follow-up message for anyone who responds
+## For anyone who wants to go deeper live
 
-Thanks so much for being up for this! Here's a quick scheduling link: [insert Calendly/scheduling link]. Should take about 15-20 minutes, and it's genuinely just me asking questions and listening — nothing to prepare. Looking forward to it.
+The survey's last question asks if they're open to a 15-20 min follow-up call — so there's no need to chase this manually. Anyone who opts in shows up as a "yes" in the form responses; just reach out to that subset directly to schedule.
 
 ---
 
 ## Tracking note
 
-Log every outreach send and response in the interview tracker (see interview-tracker.xlsx) so you can see response rate by channel (personal network vs. FB groups vs. listserv) and double down on whatever's converting.
+Log responses in the interview tracker (see interview-tracker.xlsx): the live-call sheet for anyone who does a 1:1, and a lightweight tally of survey-only responses so total sample size (survey + calls) is visible in one place.
